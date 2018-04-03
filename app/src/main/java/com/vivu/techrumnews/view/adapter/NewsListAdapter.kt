@@ -14,7 +14,7 @@ import java.util.ArrayList
 class NewsListAdapter(context: Context, inf: NewsInterface) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
     var subContext = context
-    var StringList = ArrayList<NewsModel>()
+    var dataList = ArrayList<NewsModel>()
     var view = inf
 
     var NEWS_TYPE = 1
@@ -37,11 +37,28 @@ class NewsListAdapter(context: Context, inf: NewsInterface) : RecyclerView.Adapt
     }
 
     override fun getItemCount(): Int {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+        return dataList.size
+    }
+
+    override fun getItemViewType(position: Int): Int {
+        return if (dataList[position].isAds) {
+            ADS_TYPE
+        } else {
+            NEWS_TYPE
+        }
     }
 
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+        when (holder) {
+            is ViewHolder -> {
+                val data = dataList[position]
+                holder.setData(data)
+            }
+
+            is AdsViewHolder -> {
+                //Init Ads
+            }
+        }
     }
 
     class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
@@ -57,12 +74,8 @@ class NewsListAdapter(context: Context, inf: NewsInterface) : RecyclerView.Adapt
 
     class AdsViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
 
-        var tv_author_news: TextView = itemView.findViewById(R.id.tv_author_news)
-        var tv_title_news: TextView = itemView.findViewById(R.id.tv_title_news)
-
         fun setData(model: NewsModel) {
-            tv_author_news.text = model.author
-            tv_title_news.text = model.title
+
         }
     }
 }
